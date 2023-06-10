@@ -4,9 +4,14 @@ const db = new Database('src/database/todo.db', { verbose: console.log },
 );
 db.pragma('journal_mode = WAL');
 
-const createTable = "CREATE TABLE IF NOT EXISTS users('name' varchar, 'surname' varchar, 'date_of_birth' DATE DEFAULT, 'email' varchar, 'username' varchar PRIMARY KEY, 'password' varchar );"
+const createTable = "CREATE TABLE IF NOT EXISTS todo \
+                    ('id' INTEGER PRIMARY KEY AUTOINCREMENT, \
+                    'title' varchar,\
+                    'complete' BOOLEAN);"
 
-db.exec
+db.exec(createTable);
+
+// db.exec("DROP TABLE todo");
 
 export = {
     db
