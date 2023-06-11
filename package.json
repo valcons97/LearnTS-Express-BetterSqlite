@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "build": "tsc",
-    "start": "node dist/build/server.js"
+    "start": "node build/src/server.js"
   },
   "dependencies": {
     "better-sqlite3": "^8.4.0",
