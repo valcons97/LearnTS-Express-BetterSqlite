@@ -6,7 +6,7 @@ db.pragma('journal_mode = WAL');
 
 const createTable = "CREATE TABLE IF NOT EXISTS todo \
                     ('id' INTEGER PRIMARY KEY AUTOINCREMENT, \
-                    'title' varchar,\
+                    'title' varchar NOT NULL,\
                     'complete' BOOLEAN);"
 
 db.exec(createTable);
