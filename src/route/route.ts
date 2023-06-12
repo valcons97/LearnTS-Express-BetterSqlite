@@ -1,20 +1,22 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
-import controller from '../controller/controller';
+import { createTodo } from '../controller/createTodo';
 import todoValidator from '../validator/validator'
 
 const router = express.Router();
 
-router.get('/get', controller.getTodo);
+// router.get('/get', controller.getTodo);
 
-router.post('/create', todoValidator.checkCreateTodo(),
-    (req: Request, res: Response, next: NextFunction) => {
-        const error = validationResult(req);
-        if (!error.isEmpty()) {
-            return res.status(500).json(error);
-        } next();
-    }, controller.createTodo);
+// router.post('/create', todoValidator.checkCreateTodo(),
+//     (req: Request, res: Response, next: NextFunction) => {
+//         const error = validationResult(req);
+//         if (!error.isEmpty()) {
+//             return res.status(500).json(error);
+//         } next();
+//     }, createTodo);
 
-export = {
-    route: router
-}
+router.post('/create', createTodo);
+
+export default router;
+
+
