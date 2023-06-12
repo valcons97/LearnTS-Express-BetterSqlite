@@ -5,9 +5,9 @@ import todoValidator from '../validator/validator'
 
 const router = express.Router();
 
-router.get('/getTodo', controller.getTodo);
+router.get('/get', controller.getTodo);
 
-router.post('/createTodo', todoValidator.checkCreateTodo(),
+router.post('/create', todoValidator.checkCreateTodo(),
     (req: Request, res: Response, next: NextFunction) => {
         const error = validationResult(req);
         if (!error.isEmpty()) {
