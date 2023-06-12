@@ -1,5 +1,9 @@
 import express, { NextFunction, Request, Response } from "express";
 import Container from "typedi";
+import {
+	FieldIsRequiredError,
+	ValidationError,
+} from "../error/validationError";
 import { TodoService } from "../service/todoService";
 
 export const createTodo = async (
@@ -15,6 +19,12 @@ export const createTodo = async (
 			todo: results,
 		});
 	} catch (e) {
-		return next(e);
+		let err: any;
+		if (req.body.title == null) {
+			err = new FieldIsRequiredError("Title");
+		} else {
+			err = e;
+		}
+		return next(err);
 	}
 };
