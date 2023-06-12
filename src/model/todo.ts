@@ -14,19 +14,13 @@
 // }
 
 export class Todo {
-    readonly id: number | bigint;
-    readonly title: string;
-    readonly complete: number;
+	readonly id: number | bigint;
+	readonly title: string;
+	readonly complete: number;
 
-    constructor(
-        id: number | bigint,
-        title: string,
-        complete: number,
-
-    ) {
-        this.id = id;
-        this.title = title;
-        this.complete = complete;
-
-    }
+	constructor(id: number | bigint, title: string, complete: number) {
+		this.id = id;
+		this.title = title;
+		this.complete = complete;
+	}
 }

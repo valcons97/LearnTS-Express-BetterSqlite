@@ -5,29 +5,31 @@ import diConfig from "../config/di";
 
 @Service()
 export default class TodoRepository {
-    private db: Database;
+	private db: Database;
 
-    constructor(
-        @Inject(diConfig.database)
-        db: Database
-    ) {
-        this.db = db;
-    }
+	constructor(
+		@Inject(diConfig.database)
+		db: Database
+	) {
+		this.db = db;
+	}
 
-    public async createTodo(todo: CreateTodo): Promise<Todo> {
-        const todoId: number | bigint = this.db.transaction(() => {
-            const insertOrderQuery = "INSERT INTO todo (title,complete) values(?,?)";
-            const insertResult = this.db.prepare(insertOrderQuery).run(todo.title, 0);
+	public async createTodo(todo: CreateTodo): Promise<Todo> {
+		const todoId: number | bigint = this.db.transaction(() => {
+			const insertOrderQuery =
+				"INSERT INTO todo (title,complete) values(?,?)";
+			const insertResult = this.db
+				.prepare(insertOrderQuery)
+				.run(todo.title, 0);
 
-            return insertResult.lastInsertRowid;
-        })();
+			return insertResult.lastInsertRowid;
+		})();
 
-        return new Todo(todoId, todo.title, 0);
-    }
+		return new Todo(todoId, todo.title, 0);
+	}
 }
 
 export type CreateTodo = {
-    title: string;
-    complete: number;
-}
-
+	title: string;
+	complete: number;
+};

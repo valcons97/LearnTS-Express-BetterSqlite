@@ -1,5 +1,5 @@
 const diConfig = {
-    database: 'db'
-}
+	database: "db",
+};
 
 export default diConfig;

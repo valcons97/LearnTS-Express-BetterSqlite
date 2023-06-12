@@ -1,7 +1,7 @@
-import express, { Request, Response, NextFunction } from 'express';
-import { validationResult } from 'express-validator';
-import { createTodo } from '../controller/createTodo';
-import todoValidator from '../validator/validator'
+import express, { Request, Response, NextFunction } from "express";
+import { validationResult } from "express-validator";
+import { createTodo } from "../controller/createTodo";
+import todoValidator from "../validator/validator";
 
 const router = express.Router();
 
@@ -15,8 +15,6 @@ const router = express.Router();
 //         } next();
 //     }, createTodo);
 
-router.post('/create', createTodo);
+router.post("/create", createTodo);
 
 export default router;
-
-
