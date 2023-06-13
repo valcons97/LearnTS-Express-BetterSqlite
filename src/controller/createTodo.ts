@@ -1,30 +1,33 @@
-import express, { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Container from "typedi";
-import {
-	FieldIsRequiredError,
-	ValidationError,
-} from "../error/validationError";
 import { TodoService } from "../service/todoService";
+import { validateFn, validateField } from "../validator/validator";
 
 export const createTodo = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
+	const { title } = req.body;
+
+	const validationError: Error | null = validateFn(() =>
+		validateField(title)
+	);
+	if (validationError != null) {
+		return next(validationError);
+	}
 	const service = Container.get(TodoService);
 	try {
-		const results = await service.createTodo(req.body.title);
+		const results = await service.createTodo(title);
 		res.status(200).json({
 			message: "Sucesfully create todo",
 			todo: results,
 		});
 	} catch (e) {
 		let err: any;
-		if (req.body.title == null) {
-			err = new FieldIsRequiredError("Title");
-		} else {
-			err = e;
-		}
+
+		err = e;
+
 		return next(err);
 	}
 };

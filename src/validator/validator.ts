@@ -1,11 +1,29 @@
-import { body } from 'express-validator';
+import { FieldIsRequiredError } from "../error/validationError";
 
-class TodoValidator {
-    checkCreateTodo() {
-        return [
-            body('title').notEmpty().withMessage("The title field should not be empty"),
-        ];
-    }
-}
+export const validateField: Validator<string> = (
+	field?: string | undefined
+): Error | null => {
+	const fieldName = "title";
 
-export default new TodoValidator();
+	if (field == null || field == undefined || field === "") {
+		return new FieldIsRequiredError(fieldName);
+	}
+
+	return null;
+};
+
+export type Validator<T> = (data?: T | undefined) => Error | null;
+
+export type OnError = (err: Error) => void;
+
+export const validateFn = (...validators: Validator<any>[]): Error | null => {
+	for (let i = 0; i < validators.length; i++) {
+		const validator = validators[i];
+		const err = validator();
+		if (err != null) {
+			return err;
+		}
+	}
+
+	return null;
+};
