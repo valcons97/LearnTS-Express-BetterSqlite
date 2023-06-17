@@ -17,5 +17,7 @@ const createSqliteConn = (reset: boolean = false): Database => {
 
 	db.exec(createTable);
 
+	// // db.exec("DROP TABLE todo");
+
 	return db;
 };

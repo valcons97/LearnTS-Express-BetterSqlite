@@ -27,6 +27,36 @@ export default class TodoRepository {
 
 		return new Todo(todoId, todo.title, 0);
 	}
+
+	public async getTodo(ids?: number[], limit?: number): Promise<Todo[]> {
+		let query = "SELECT id, title, complete FROM todo";
+		let args: number[] = [];
+
+		if (ids) {
+			const multipleId = ids.map(() => "?").join(",");
+			query = `${query} WHERE id IN (${multipleId})`;
+			args = ids;
+		}
+
+		if (limit == undefined || limit > 10) limit = 10;
+
+		query = `${query} LIMIT ${limit}`;
+		console.log(query);
+
+		try {
+			const rows = this.db.prepare(query).all(args);
+			if (rows.length == 0) {
+				return [];
+			}
+
+			const castRows = rows as [{ [key: string]: any }];
+			return castRows.map(
+				(row) => new Todo(row.id, row.title, row.complete)
+			);
+		} catch (e) {
+			throw Error(`Failed to get list of todo, e: : ${e}`);
+		}
+	}
 }
 
 export type CreateTodo = {
