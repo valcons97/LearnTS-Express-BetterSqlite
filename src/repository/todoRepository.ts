@@ -28,7 +28,11 @@ export default class TodoRepository {
 		return new Todo(todoId, todo.title, 0);
 	}
 
-	public async getTodo(ids?: number[], limit?: number): Promise<Todo[]> {
+	public async getTodo(
+		ids?: number[],
+		limit?: number,
+		page?: number
+	): Promise<Todo[]> {
 		let query = "SELECT id, title, complete FROM todo";
 		let args: number[] = [];
 
@@ -38,9 +42,11 @@ export default class TodoRepository {
 			args = ids;
 		}
 
-		if (limit == undefined || limit > 10) limit = 10;
+		if (limit === undefined || limit > 10) limit = 10;
 
-		query = `${query} LIMIT ${limit}`;
+		if (page === undefined) page = 1;
+
+		query = `${query} LIMIT ${limit} OFFSET ${page * 10 - 10}`;
 		console.log(query);
 
 		try {

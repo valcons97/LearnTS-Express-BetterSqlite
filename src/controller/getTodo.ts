@@ -14,15 +14,15 @@ export const getTodo = async (
 	if (req.params?.id === undefined) id = undefined;
 	else id = [parseInt(req.params?.id)];
 
-	const offset = req.query?.limit as number | undefined;
+	const page = req.query?.page as number | undefined;
 
 	const limit = req.query?.limit as number | undefined;
 
 	try {
-		const todos = await service.getTodo(id, limit);
+		const todos = await service.getTodo(id, limit, page);
 
 		return res.status(200).json({
-			message: "Default limit is 10",
+			message: "Default limit and maximum limit is 10",
 			data: todos,
 		});
 	} catch (e) {

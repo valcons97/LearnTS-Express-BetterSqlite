@@ -23,8 +23,12 @@ class TodoService {
 		}
 	}
 
-	public async getTodo(id?: number[], limit?: number): Promise<Todo[]> {
-		return await this._todoRepository.getTodo(id, limit);
+	public async getTodo(
+		id?: number[],
+		limit?: number,
+		page?: number
+	): Promise<Todo[]> {
+		return await this._todoRepository.getTodo(id, limit, page);
 	}
 }
 
