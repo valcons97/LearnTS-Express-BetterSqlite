@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Container from "typedi";
+import { CustomError } from "../error/customError";
 import { TodoService } from "../service/todoService";
 
 export const getTodo = async (
@@ -11,12 +12,24 @@ export const getTodo = async (
 
 	var id;
 
-	if (req.params?.id === undefined) id = undefined;
-	else id = [parseInt(req.params?.id)];
+	const ids = req.query?.id as number[] | undefined;
 
 	const page = req.query?.page as number | undefined;
 
 	const limit = req.query?.limit as number | undefined;
+
+	if (req.params?.id && req.query?.id)
+		return next(
+			new CustomError(
+				500,
+				"Please remove / disable id in query parameter"
+			)
+		);
+
+	if (req.params?.id === undefined) id = undefined;
+	else id = [parseInt(req.params?.id)];
+
+	if (!req.params?.id) if (ids) id = ids;
 
 	try {
 		const todos = await service.getTodo(id, limit, page);
