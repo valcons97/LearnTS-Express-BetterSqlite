@@ -10,26 +10,26 @@ export const getTodo = async (
 ) => {
 	const service = Container.get(TodoService);
 
-	var id;
+	let id;
 
-	const ids = req.query?.id as number[] | undefined;
+	const ids = req.query?.ids as string | undefined;
 
 	const page = req.query?.page as number | undefined;
 
 	const limit = req.query?.limit as number | undefined;
 
-	if (req.params?.id && req.query?.id)
+	if (req.params?.id && req.query?.ids)
 		return next(
 			new CustomError(
 				500,
-				"Please remove / disable id in query parameter"
+				"Please remove / disable ids in query parameter"
 			)
 		);
 
 	if (req.params?.id === undefined) id = undefined;
 	else id = [parseInt(req.params?.id)];
 
-	if (!req.params?.id) if (ids) id = ids;
+	if (!req.params?.id) if (ids) id = ids.split(",").map(Number);
 
 	try {
 		const todos = await service.getTodo(id, limit, page);
