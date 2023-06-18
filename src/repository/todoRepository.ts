@@ -5,6 +5,7 @@ import diConfig from "../config/di";
 
 /// Note:
 /// Used prepared statement
+///
 @Service()
 export default class TodoRepository {
 	private db: Database;
@@ -44,7 +45,7 @@ export default class TodoRepository {
 
 		if (page === undefined) page = 1;
 
-		query = `${query} LIMIT ${limit} OFFSET ${page * 10 - 10}`;
+		query = `${query} LIMIT ${limit} OFFSET ${page * limit - limit}`;
 		console.log(query);
 
 		try {
