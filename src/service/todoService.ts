@@ -30,6 +30,10 @@ class TodoService {
 	): Promise<Todo[]> {
 		return await this._todoRepository.getTodo(id, limit, page);
 	}
+
+	public async updateTodo(id: number): Promise<Todo> {
+		return await this._todoRepository.updateTodo(id);
+	}
 }
 
 export { TodoService };

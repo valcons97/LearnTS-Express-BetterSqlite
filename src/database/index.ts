@@ -11,13 +11,15 @@ const createSqliteConn = (reset: boolean = false): Database => {
 
 	const createTable =
 		"CREATE TABLE IF NOT EXISTS todo \
-                    ('id' INTEGER PRIMARY KEY AUTOINCREMENT, \
-                    'title' varchar NOT NULL,\
-                    'complete' BOOLEAN);";
+	                ('id' INTEGER PRIMARY KEY AUTOINCREMENT, \
+	                'title' varchar NOT NULL,\
+					'description' varchar,\
+	                'complete' BOOLEAN);";
 
 	db.exec(createTable);
 
-	// // db.exec("DROP TABLE todo");
+	// db.exec("DROP TABLE todo");
+	// console.log("Todo table dropped");
 
 	return db;
 };

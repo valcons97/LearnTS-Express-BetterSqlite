@@ -16,10 +16,10 @@ export default class TodoRepository {
 
 	public async createTodo(todo: CreateTodo): Promise<Todo> {
 		const todoId: number | bigint = this.db.transaction(() => {
-			const insertOrderQuery =
+			const insertTodoQuery =
 				"INSERT INTO todo (title,complete) values(?,?)";
 			const insertResult = this.db
-				.prepare(insertOrderQuery)
+				.prepare(insertTodoQuery)
 				.run(todo.title, 0);
 
 			return insertResult.lastInsertRowid;
@@ -57,6 +57,7 @@ export default class TodoRepository {
 				}
 
 				const castRows = rows as [{ [key: string]: any }];
+
 				return castRows.map(
 					(row) => new Todo(row.id, row.title, row.complete)
 				);
@@ -66,18 +67,19 @@ export default class TodoRepository {
 		}
 	}
 
-	public async updateTodo(todo: CreateTodo): Promise<Todo> {
-		const todoId: number | bigint = this.db.transaction(() => {
-			const insertOrderQuery =
-				"INSERT INTO todo (title,complete) values(?,?)";
-			const insertResult = this.db
-				.prepare(insertOrderQuery)
-				.run(todo.title, 0);
+	public async updateTodo(id: number): Promise<Todo> {
+		const todo = this.db.transaction(() => {
+			/// Use ? to prevent sql injection in update
+			/// https://stackoverflow.com/a/73553451
+			const updateTodoQuery = `UPDATE todo SET complete = NOT complete WHERE id = ?`;
+			const selectUpdatedQuery = `SELECT id,title,complete FROM todo WHERE id = ?`;
+			this.db.prepare(updateTodoQuery).run(id);
+			const getResult = this.db.prepare(selectUpdatedQuery).get(id);
 
-			return insertResult.lastInsertRowid;
+			return getResult as Todo;
 		})();
 
-		return new Todo(todoId, todo.title, 0);
+		return new Todo(todo.id, todo.title, todo.complete);
 	}
 }
 
