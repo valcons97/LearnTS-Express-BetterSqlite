@@ -16,11 +16,18 @@
 export class Todo {
 	readonly id: number | bigint;
 	readonly title: string;
+	readonly description?: string | undefined;
 	readonly complete: number;
 
-	constructor(id: number | bigint, title: string, complete: number) {
+	constructor(
+		id: number | bigint,
+		title: string,
+		description: string | undefined,
+		complete: number
+	) {
 		this.id = id;
 		this.title = title;
+		this.description = description;
 		this.complete = complete;
 	}
 }

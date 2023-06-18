@@ -16,16 +16,17 @@ export default class TodoRepository {
 
 	public async createTodo(todo: CreateTodo): Promise<Todo> {
 		const todoId: number | bigint = this.db.transaction(() => {
+			if (!todo.description) todo.description = "";
 			const insertTodoQuery =
-				"INSERT INTO todo (title,complete) values(?,?)";
+				"INSERT INTO todo (title,description,complete) values(?,?,?)";
 			const insertResult = this.db
 				.prepare(insertTodoQuery)
-				.run(todo.title, 0);
+				.run(todo.title, todo.description, 0);
 
 			return insertResult.lastInsertRowid;
 		})();
 
-		return new Todo(todoId, todo.title, 0);
+		return new Todo(todoId, todo.title, todo.description, 0);
 	}
 
 	public async getTodo(
@@ -59,7 +60,13 @@ export default class TodoRepository {
 				const castRows = rows as [{ [key: string]: any }];
 
 				return castRows.map(
-					(row) => new Todo(row.id, row.title, row.complete)
+					(row) =>
+						new Todo(
+							row.id,
+							row.title,
+							row.description,
+							row.complete
+						)
 				);
 			})();
 		} catch (e) {
@@ -79,11 +86,12 @@ export default class TodoRepository {
 			return getResult as Todo;
 		})();
 
-		return new Todo(todo.id, todo.title, todo.complete);
+		return new Todo(todo.id, todo.title, todo.description, todo.complete);
 	}
 }
 
 export type CreateTodo = {
 	title: string;
+	description?: string;
 	complete: number;
 };

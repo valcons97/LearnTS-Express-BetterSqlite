@@ -10,9 +10,13 @@ class TodoService {
 		this._todoRepository = todoRepository;
 	}
 
-	public async createTodo(title: string): Promise<Todo> {
+	public async createTodo(
+		title: string,
+		description?: string | undefined
+	): Promise<Todo> {
 		const createTodo: CreateTodo = {
 			title: title,
+			description: description,
 			complete: 0,
 		};
 

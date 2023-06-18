@@ -9,6 +9,7 @@ export const createTodo = async (
 	next: NextFunction
 ) => {
 	const { title } = req.body;
+	const { description } = req.body;
 
 	const validationError: Error | null = validateFn(() =>
 		validateField(title)
@@ -18,7 +19,7 @@ export const createTodo = async (
 	}
 	const service = Container.get(TodoService);
 	try {
-		const results = await service.createTodo(title);
+		const results = await service.createTodo(title, description);
 		res.status(200).json({
 			message: "Sucesfully create todo",
 			todo: results,
