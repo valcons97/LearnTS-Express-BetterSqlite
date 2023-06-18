@@ -29,7 +29,7 @@ export const getTodo = async (
 	if (req.params?.id === undefined) id = undefined;
 	else id = [parseInt(req.params?.id)];
 
-	if (!req.params?.id) if (ids) id = ids.split(",").map(Number);
+	if (!req.params?.id) if (ids) id = ids.split(/[^0-9]/).map(Number);
 
 	try {
 		const todos = await service.getTodo(id, limit, page);

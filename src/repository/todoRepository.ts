@@ -50,18 +50,34 @@ export default class TodoRepository {
 		console.log(query);
 
 		try {
-			const rows = this.db.prepare(query).all(args);
-			if (rows.length == 0) {
-				return [];
-			}
+			return this.db.transaction(() => {
+				const rows = this.db.prepare(query).all(args);
+				if (rows.length == 0) {
+					return [];
+				}
 
-			const castRows = rows as [{ [key: string]: any }];
-			return castRows.map(
-				(row) => new Todo(row.id, row.title, row.complete)
-			);
+				const castRows = rows as [{ [key: string]: any }];
+				return castRows.map(
+					(row) => new Todo(row.id, row.title, row.complete)
+				);
+			})();
 		} catch (e) {
 			throw Error(`Failed to get list of todo, e: : ${e}`);
 		}
+	}
+
+	public async updateTodo(todo: CreateTodo): Promise<Todo> {
+		const todoId: number | bigint = this.db.transaction(() => {
+			const insertOrderQuery =
+				"INSERT INTO todo (title,complete) values(?,?)";
+			const insertResult = this.db
+				.prepare(insertOrderQuery)
+				.run(todo.title, 0);
+
+			return insertResult.lastInsertRowid;
+		})();
+
+		return new Todo(todoId, todo.title, 0);
 	}
 }
 
