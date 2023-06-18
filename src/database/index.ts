@@ -2,10 +2,6 @@ import DatabaseConstructor, { Database } from "better-sqlite3";
 import config from "../config/config";
 
 export const createDB = (): Database => {
-	return createSqliteConn(config.isE2e);
-};
-
-const createSqliteConn = (reset: boolean = false): Database => {
 	const db = new DatabaseConstructor(config.dbPath);
 	db.exec("PRAGMA foreign_keys = ON");
 

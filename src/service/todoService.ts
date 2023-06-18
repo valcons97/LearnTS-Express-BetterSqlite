@@ -1,6 +1,9 @@
 import { Service } from "typedi";
 import { Todo } from "../model/todo";
-import TodoRepository, { CreateTodo } from "../repository/todoRepository";
+import TodoRepository, {
+	CreateTodo,
+	UpdateTodo,
+} from "../repository/todoRepository";
 
 @Service()
 class TodoService {
@@ -36,7 +39,10 @@ class TodoService {
 	}
 
 	public async updateTodo(id: number): Promise<Todo> {
-		return await this._todoRepository.updateTodo(id);
+		const updateTodo: UpdateTodo = {
+			id: id,
+		};
+		return await this._todoRepository.updateTodo(updateTodo);
 	}
 }
 
