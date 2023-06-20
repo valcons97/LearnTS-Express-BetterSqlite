@@ -20,11 +20,11 @@ export default class TodoRepository {
 	public async createTodo(todo: CreateTodo): Promise<Todo> {
 		const insertTodoQuery =
 			"INSERT INTO todo (title,description,complete) values(?,?,?)";
-		const id = this.db
+		const insertedId = this.db
 			.prepare(insertTodoQuery)
 			.run(todo.title, todo.description, 0).lastInsertRowid;
 
-		return new Todo(id, todo.title, todo.description, 0);
+		return new Todo(insertedId, todo.title, todo.description, 0);
 	}
 
 	public async getTodo(

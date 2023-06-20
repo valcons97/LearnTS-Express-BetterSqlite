@@ -1,18 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import Container from "typedi";
 import { TodoService } from "../service/todoService";
-import { validateFn, validateField } from "../validator/validator";
+import {
+	validateFn,
+	validateFieldWithoutEmptyString,
+	validateFieldWithEmptyString,
+} from "../validator/validator";
 
 export const createTodo = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	const { title } = req.body;
-	const { description } = req.body;
+	const { title, description } = req.body;
 
-	const validationError: Error | null = validateFn(() =>
-		validateField(title)
+	const validationError: Error | null = validateFn(
+		() => validateFieldWithoutEmptyString(title, "title"),
+		() => validateFieldWithEmptyString(description, "description")
 	);
 	if (validationError != null) {
 		return next(validationError);

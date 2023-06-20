@@ -9,10 +9,11 @@ export const createDB = (): Database => {
 		"CREATE TABLE IF NOT EXISTS todo \
 	                ('id' INTEGER PRIMARY KEY AUTOINCREMENT, \
 	                'title' varchar NOT NULL,\
-					'description' varchar,\
+					'description' varchar NOT NULL,\
 	                'complete' BOOLEAN);";
 
 	db.exec(createTable);
+	console.log("Todo table created");
 
 	// db.exec("DROP TABLE todo");
 	// console.log("Todo table dropped");

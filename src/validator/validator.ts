@@ -1,18 +1,44 @@
+import { CustomError } from "../error/customError";
 import { FieldIsRequiredError } from "../error/validationError";
 
-export const validateField: Validator<string> = (
-	field?: string | undefined
+export const validateFieldWithoutEmptyString: Validator<string> = (
+	field?: string | undefined,
+	fieldName?: string
 ): Error | null => {
-	const fieldName = "title";
-
+	if (fieldName == null || fieldName == undefined || fieldName == "") {
+		return new CustomError(
+			500,
+			"Cannot validate because fieldname is unknown. Please check validate function"
+		);
+	}
 	if (field == null || field == undefined || field === "") {
-		return new FieldIsRequiredError(fieldName);
+		return new FieldIsRequiredError(fieldName!);
 	}
 
 	return null;
 };
 
-export type Validator<T> = (data?: T | undefined) => Error | null;
+export const validateFieldWithEmptyString: Validator<string> = (
+	field?: string | undefined,
+	fieldName?: string
+): Error | null => {
+	if (fieldName == null || fieldName == undefined || fieldName == "") {
+		return new CustomError(
+			500,
+			"Cannot validate because fieldname is unknown. Please check validate function"
+		);
+	}
+	if (field == null || field == undefined) {
+		return new FieldIsRequiredError(fieldName!);
+	}
+
+	return null;
+};
+
+export type Validator<T> = (
+	field?: string,
+	data?: T | undefined
+) => Error | null;
 
 export type OnError = (err: Error) => void;
 
