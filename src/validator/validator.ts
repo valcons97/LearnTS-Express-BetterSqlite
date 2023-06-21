@@ -1,3 +1,4 @@
+import { BadRequestError } from "../error/badRequestError";
 import { CustomError } from "../error/customError";
 import { FieldIsRequiredError } from "../error/validationError";
 
@@ -6,8 +7,7 @@ export const validateFieldWithoutEmptyString: Validator<string> = (
 	fieldName?: string
 ): Error | null => {
 	if (fieldName == null || fieldName == undefined || fieldName == "") {
-		return new CustomError(
-			500,
+		return new BadRequestError(
 			"Cannot validate because fieldname is unknown. Please check validate function"
 		);
 	}
@@ -23,8 +23,7 @@ export const validateFieldWithEmptyString: Validator<string> = (
 	fieldName?: string
 ): Error | null => {
 	if (fieldName == null || fieldName == undefined || fieldName == "") {
-		return new CustomError(
-			500,
+		return new BadRequestError(
 			"Cannot validate because fieldname is unknown. Please check validate function"
 		);
 	}
