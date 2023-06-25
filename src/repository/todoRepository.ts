@@ -18,13 +18,17 @@ export default class TodoRepository {
 	}
 
 	public async createTodo(todo: CreateTodo): Promise<Todo> {
-		const insertTodoQuery =
-			"INSERT INTO todo (title,description,complete) values(?,?,?)";
-		const insertedId = this.db
-			.prepare(insertTodoQuery)
-			.run(todo.title, todo.description, 0).lastInsertRowid;
+		try {
+			const insertTodoQuery =
+				"INSERT INTO todo (title,description,complete) values(?,?,?)";
+			const insertedId = this.db
+				.prepare(insertTodoQuery)
+				.run(todo.title, todo.description, 0).lastInsertRowid;
 
-		return new Todo(insertedId, todo.title, todo.description, 0);
+			return new Todo(insertedId, todo.title, todo.description, 0);
+		} catch (e) {
+			throw Error(`Failed to create todo, e: : ${e}`);
+		}
 	}
 
 	public async getTodo(
@@ -65,20 +69,35 @@ export default class TodoRepository {
 		}
 	}
 
-	public async updateTodo(todo: UpdateTodo): Promise<Todo> {
-		const updateTodoQuery = `UPDATE todo SET complete = NOT complete WHERE id = ?`;
-		const selectUpdatedQuery = `SELECT id,title,complete FROM todo WHERE id = ?`;
-		this.db.prepare(updateTodoQuery).run(todo.id);
-		const resultTodo = this.db
-			.prepare(selectUpdatedQuery)
-			.get(todo.id) as Todo;
+	public async updateTodo(todo: TodoId): Promise<Todo> {
+		try {
+			const updateTodoQuery = `UPDATE todo SET complete = NOT complete WHERE id = ?`;
+			const selectUpdatedQuery = `SELECT id,title,complete FROM todo WHERE id = ?`;
+			this.db.prepare(updateTodoQuery).run(todo.id);
+			const resultTodo = this.db
+				.prepare(selectUpdatedQuery)
+				.get(todo.id) as Todo;
 
-		return new Todo(
-			resultTodo.id,
-			resultTodo.title,
-			resultTodo.description,
-			resultTodo.complete
-		);
+			return new Todo(
+				resultTodo.id,
+				resultTodo.title,
+				resultTodo.description,
+				resultTodo.complete
+			);
+		} catch (e) {
+			throw Error(`Failed to update todo, e: : ${e}`);
+		}
+	}
+
+	public async deleteTodo(todo: TodoId): Promise<boolean> {
+		try {
+			const updateTodoQuery = `DELETE FROM todo WHERE id = ?`;
+			this.db.prepare(updateTodoQuery).run(todo.id);
+
+			return true;
+		} catch (e) {
+			throw Error(`Failed to update todo, e: : ${e}`);
+		}
 	}
 }
 
@@ -88,7 +107,7 @@ export type CreateTodo = {
 	complete: number;
 };
 
-export type UpdateTodo = {
+export type TodoId = {
 	id: number;
 };
 

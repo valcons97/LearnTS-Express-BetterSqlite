@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Container from "typedi";
 import { TodoService } from "../service/todoService";
 
-export const updateTodoCompleted = async (
+export const deleteTodo = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -11,10 +11,10 @@ export const updateTodoCompleted = async (
 
 	const service = Container.get(TodoService);
 	try {
-		const results = await service.updateTodoCompleted(parseInt(id));
+		const results = await service.deleteTodo(parseInt(id));
 		res.status(200).json({
-			message: `Sucesfully update todo with id = ${id}`,
-			todo: results,
+			message: `Sucesfully delete todo with id = ${id}`,
+			deleted: results,
 		});
 	} catch (e) {
 		let err: any;
