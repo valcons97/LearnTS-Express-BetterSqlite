@@ -1,9 +1,17 @@
 import { Service } from "typedi";
 import Todo from "../model/todo";
+import { NotFoundError } from "../error/notFoundError";
+import { CustomError } from "../error/customError";
 import TodoRepository, {
 	CreateTodo,
 	TodoId,
 } from "../repository/todoRepository";
+
+class IdNotFoundError extends NotFoundError {
+	constructor(ids: number[]) {
+		super(`Todo with id of [${ids.join(", ")}]`);
+	}
+}
 
 @Service()
 class TodoService {
@@ -42,7 +50,23 @@ class TodoService {
 		const updateTodo: TodoId = {
 			id: id,
 		};
-		return await this._todoRepository.updateTodo(updateTodo);
+
+		if (id == undefined) {
+			throw new CustomError(400, "Id is not defined");
+		}
+
+		const foundTodo: Todo[] = await this._todoRepository.getTodo([
+			Number(id),
+		]);
+
+		if (foundTodo.length == 0) {
+			throw new IdNotFoundError([Number(id)]);
+		}
+		try {
+			return await this._todoRepository.updateTodo(updateTodo);
+		} catch (e) {
+			throw Error("Failed to update Todo : ${String(e)}");
+		}
 	}
 
 	public async deleteTodo(id: number | bigint): Promise<boolean> {
@@ -53,4 +77,4 @@ class TodoService {
 	}
 }
 
-export { TodoService };
+export { TodoService, IdNotFoundError };

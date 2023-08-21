@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import Container from "typedi";
-import { TodoService } from "../service/todoService";
+import { TodoService, IdNotFoundError } from "../service/todoService";
+import { CustomError } from "../error/customError";
+import Todo from "../model/todo";
 
 export const updateTodoCompleted = async (
 	req: Request,
@@ -10,6 +12,7 @@ export const updateTodoCompleted = async (
 	const id = req.params?.id;
 
 	const service = Container.get(TodoService);
+
 	try {
 		const results = await service.updateTodoCompleted(parseInt(id));
 		res.status(200).json({
