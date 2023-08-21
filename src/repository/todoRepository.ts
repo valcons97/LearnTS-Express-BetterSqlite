@@ -1,5 +1,5 @@
 import { Database } from "better-sqlite3";
-import { Todo } from "../model/todo";
+import Todo from "../model/todo";
 import { Inject, Service } from "typedi";
 import diConfig from "../config/di";
 
@@ -108,7 +108,7 @@ export type CreateTodo = {
 };
 
 export type TodoId = {
-	id: number;
+	id: number | bigint;
 };
 
 //* How to use transaction

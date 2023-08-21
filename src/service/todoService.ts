@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import { Todo } from "../model/todo";
+import Todo from "../model/todo";
 import TodoRepository, {
 	CreateTodo,
 	TodoId,
@@ -38,14 +38,14 @@ class TodoService {
 		return await this._todoRepository.getTodo(id, limit, page);
 	}
 
-	public async updateTodoCompleted(id: number): Promise<Todo> {
+	public async updateTodoCompleted(id: number | bigint): Promise<Todo> {
 		const updateTodo: TodoId = {
 			id: id,
 		};
 		return await this._todoRepository.updateTodo(updateTodo);
 	}
 
-	public async deleteTodo(id: number): Promise<boolean> {
+	public async deleteTodo(id: number | bigint): Promise<boolean> {
 		const deleteTodo: TodoId = {
 			id: id,
 		};

@@ -13,7 +13,7 @@
 //     create
 // }
 
-export class Todo {
+export default class Todo {
 	readonly id: number | bigint;
 	readonly title: string;
 	readonly description?: string | undefined;
