@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import Container from "typedi";
-import { TodoService } from "../service/todoService";
+import { TodoService } from "../../service/todoService";
 import {
 	validateFn,
 	validateFieldWithoutEmptyString,
 	validateFieldWithEmptyString,
-} from "../validator/validator";
+} from "../../validator/validator";
 
 export const createTodo = async (
 	req: Request,

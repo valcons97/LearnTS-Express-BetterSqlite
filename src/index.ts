@@ -1,5 +1,5 @@
 import { createApp } from "./app";
-import config from "./config/config";
+import config from "./config";
 
 const startServer = async () => {
 	const port = config.port;

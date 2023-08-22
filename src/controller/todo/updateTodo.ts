@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import Container from "typedi";
-import { TodoService, IdNotFoundError } from "../service/todoService";
-import { CustomError } from "../error/customError";
-import Todo from "../model/todo";
+import { TodoService, IdNotFoundError } from "../../service/todoService";
+import { CustomError } from "../../error/customError";
+import Todo from "../../model/todo";
 
 export const updateTodoCompleted = async (
 	req: Request,

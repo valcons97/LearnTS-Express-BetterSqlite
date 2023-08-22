@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import express, { Express, Request, Response } from "express";
-import router from "./route/route";
+import router from "./route/index";
 import { createDB } from "./database";
 import { Database } from "better-sqlite3";
 import { Container } from "typedi";

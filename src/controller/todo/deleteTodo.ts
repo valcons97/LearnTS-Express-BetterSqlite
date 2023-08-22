@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Container from "typedi";
-import { TodoService } from "../service/todoService";
+import { TodoService } from "../../service/todoService";
 
 export const deleteTodo = async (
 	req: Request,

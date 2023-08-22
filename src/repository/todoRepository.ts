@@ -3,6 +3,7 @@ import Todo from "../model/todo";
 import { Inject, Service } from "typedi";
 import diConfig from "../config/di";
 
+/// https://www.thetechplatform.com/post/importance-of-repository-design-pattern
 /// Note:
 /// Used prepared statement
 ///

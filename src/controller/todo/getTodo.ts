@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Container from "typedi";
-import { CustomError } from "../error/customError";
-import { TodoService } from "../service/todoService";
+import { CustomError } from "../../error/customError";
+import { TodoService } from "../../service/todoService";
 
 export const getTodo = async (
 	req: Request,
